@@ -2,6 +2,8 @@ package automation_test.mortgage_calculator;
 
 import comand_providers.ActOn;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import listeners.LoggerForParallelTests;
+import listeners.RetryFailedTests;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -12,7 +14,7 @@ import org.testng.annotations.Test;
 import page_objects.Home;
 import utilities.ReadConfigFiles;
 
-public class CalculateRates {
+public class CalculateRates extends LoggerForParallelTests {
     WebDriver driver;
     private static final Logger LOGGER = LogManager.getLogger(CalculateRates.class);
 
@@ -26,7 +28,7 @@ public class CalculateRates {
         //or: ActOn.browser(driver).openBrowser(ReadConfigFiles.getPropertyValues("MortgageCalculatorURL"));
         LOGGER.info(" Browser is successfully Initiated with the URL:" + url);
     }
-    @Test
+    @Test(retryAnalyzer = RetryFailedTests.class)
     public void calculateRealApr() {
         new Home(driver)
                 .mouseHoverToRates()
